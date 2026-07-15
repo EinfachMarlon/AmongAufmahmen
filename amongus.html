@@ -1,0 +1,354 @@
+html_content_final = """<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Among Us Marlon & Nikiano</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121214;
+            color: #e1e1e6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        /* Navigation / Menü */
+        nav {
+            background-color: #1a1a1e;
+            width: 100%;
+            border-bottom: 1px solid #29292e;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .nav-btn {
+            background: none;
+            border: 2px solid transparent;
+            color: #a0a0b2;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            color: #ff4757;
+            background-color: #202024;
+        }
+        .nav-btn.active {
+            color: #ff4757;
+            border-color: #ff4757;
+            background-color: #202024;
+        }
+
+        /* Hauptinhalt */
+        main {
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #1a1a1e;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #29292e;
+        }
+        
+        /* Seitenbereiche (Standardmäßig ausgeblendet außer die aktive) */
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+        }
+
+        h1 {
+            color: #ff4757;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #29292e;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #c4c4cc;
+            font-size: 1.05rem;
+        }
+        
+        /* Startseite-Stile */
+        .intro-section {
+            background-color: #202024;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff4757;
+            margin-bottom: 20px;
+        }
+        .highlight-text {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Team-Stile */
+        .team-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .team-member {
+            background-color: #202024;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #29292e;
+            transition: transform 0.2s;
+        }
+        .team-member:hover {
+            transform: translateY(-2px);
+            border-color: #ff4757;
+        }
+        .member-name {
+            font-size: 1.3rem;
+            color: #ff4757;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .member-role-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .member-role-list li {
+            background: none;
+            margin: 0;
+            padding: 5px 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #c4c4cc;
+        }
+        .member-role-list li::before {
+            content: "•";
+            color: #ff4757;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .member-role-list li:hover {
+            background: none;
+            transform: none;
+        }
+
+        /* Regelwerk-Stile */
+        ul.rules-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul.rules-list li {
+            background-color: #202024;
+            margin-bottom: 12px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            align-items: flex-start;
+        }
+        ul.rules-list li:hover {
+            transform: translateX(5px);
+            background-color: #29292e;
+        }
+        .rule-number {
+            font-weight: bold;
+            color: #ff4757;
+            margin-right: 10px;
+            min-width: 25px;
+        }
+        .rule-text {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Menüleiste -->
+<nav>
+    <div class="nav-container">
+        <button class="nav-btn active" onclick="showPage('startseite')">Startseite</button>
+        <button class="nav-btn" onclick="showPage('regelwerk')">Regelwerk</button>
+        <button class="nav-btn" onclick="showPage('team')">Unser Team</button>
+    </div>
+</nav>
+
+<!-- Hauptbereich -->
+<main>
+    <div class="container">
+        
+        <!-- SEITE 1: STARTSEITE (Standardmäßig aktiv) -->
+        <div id="startseite" class="page-content active">
+            <h1>🚀 Among Us Aufnahmen</h1>
+            <div class="intro-section">
+                <div class="highlight-text">Gemeinsam Spaß haben, Videos aufnehmen und Freundschaften aufbauen.</div>
+                <p>YouTube Videos machen viel mehr Spaß, wenn man sie mit anderen aufnimmt. Among Us ist noch besser, wenn man per Voice-Chat direkt miteinander reden kann – und genau das machen wir in unseren Videos!</p>
+            </div>
+        </div>
+
+        <!-- SEITE 2: REGELWERK -->
+        <div id="regelwerk" class="page-content">
+            <h1>📜 Among Us Marlon & Nikiano - Regelwerk</h1>
+            <ul class="rules-list">
+                <li>
+                    <span class="rule-number">1.</span>
+                    <span class="rule-text">🚫 Kein Schwören oder Beleidigen.</span>
+                </li>
+                <li>
+                    <span class="rule-number">2.</span>
+                    <span class="rule-text">😊 Respektvoll miteinander umgehen.</span>
+                </li>
+                <li>
+                    <span class="rule-number">3.</span>
+                    <span class="rule-text">🎥 Nur YouTuber oder Content Creator dürfen mitspielen.</span>
+                </li>
+                <li>
+                    <span class="rule-number">4.</span>
+                    <span class="rule-text">🎙️ Keine Stimmenverzerrer verwenden.</span>
+                </li>
+                <li>
+                    <span class="rule-number">5.</span>
+                    <span class="rule-text">🔇 Niemanden absichtlich überreden oder anschreien.</span>
+                </li>
+                <li>
+                    <span class="rule-number">6.</span>
+                    <span class="rule-text">❌ Kein Streamsniping oder Ghosting.</span>
+                </li>
+                <li>
+                    <span class="rule-number">7.</span>
+                    <span class="rule-text">👀 Keine Infos verraten, wenn man tot ist.</span>
+                </li>
+                <li>
+                    <span class="rule-number">8.</span>
+                    <span class="rule-text">🤝 Fair spielen – kein Cheaten oder Hacks.</span>
+                </li>
+                <li>
+                    <span class="rule-number">9.</span>
+                    <span class="rule-text">🎭 Keine absichtlichen Troll-Runden, die allen den Spaß verderben.</span>
+                </li>
+                <li>
+                    <span class="rule-number">10.</span>
+                    <span class="rule-text">⏰ Pünktlich zur Lobby kommen.</span>
+                </li>
+                <li>
+                    <span class="rule-number">11.</span>
+                    <span class="rule-text">🎤 Ein funktionierendes Mikrofon ist Pflicht.</span>
+                </li>
+                <li>
+                    <span class="rule-number">12.</span>
+                    <span class="rule-text">📹 Die Aufnahme sollte laufen, damit jeder Content hat.</span>
+                </li>
+                <li>
+                    <span class="rule-number">13.</span>
+                    <span class="rule-text">💬 Diskussionen ruhig und fair führen.</span>
+                </li>
+                <li>
+                    <span class="rule-number">14.</span>
+                    <span class="rule-text">🚪 Wer länger AFK ist, sagt vorher Bescheid.</span>
+                </li>
+                <li>
+                    <span class="rule-number">15.</span>
+                    <span class="rule-text">🎉 Das Wichtigste: Spaß haben!</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SEITE 3: UNSER TEAM -->
+        <div id="team" class="page-content">
+            <h1>👥 Unser Team</h1>
+            <div class="team-grid">
+                
+                <div class="team-member">
+                    <div class="member-name">👑 EinfachMarlon1.0</div>
+                    <ul class="member-role-list">
+                        <li>Ersteller dieser Seite</li>
+                        <li>Projektleitung</li>
+                    </ul>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-name">🎮 NikianoTV</div>
+                    <ul class="member-role-list">
+                        <li>Ersteller des Projektes</li>
+                        <li>Projektleitung</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    function showPage(pageId) {
+        // Alle Seiten-Inhalte ausblenden
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Alle Menüknöpfe deaktivieren
+        const buttons = document.querySelectorAll('.nav-btn');
+        buttons.forEach(button => {
+            button.classList.remove('active');
+        });
+
+        // Die ausgewählte Seite anzeigen
+        document.getElementById(pageId).classList.add('active');
+
+        // Den geklickten Knopf aktiv stylen
+        const activeButton = Array.from(buttons).find(btn => btn.getAttribute('onclick').includes(pageId));
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>
+"""
+
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(html_content_final)
